@@ -10,7 +10,7 @@ public class Playground {
 
 	public static final int MAX_ROW = 3;
 	public static final int MAX_COLUMN = 3;
-	private static final char EMPTY_FIELD = ' ';
+	public static final char EMPTY_FIELD = ' ';
 
 	private char[][] position;
 

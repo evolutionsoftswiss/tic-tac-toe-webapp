@@ -51,29 +51,19 @@ public class GameView implements Observer {
 		gameLog.info("Tic Tac Toe Game initialized.");
 	}
 
-	
-	public void move() {
+  public void move(int row, int column) {
 
-		Player currentPlayer = this.game.getCurrentPlayer();
+    Player currentPlayer = this.game.getCurrentPlayer();
 
-		if (currentPlayer instanceof HumanPlayer) {
-
-			FacesContext context = FacesContext.getCurrentInstance();
-			Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
-
-			String fieldNumberString = (String) requestMap.get("fieldNumber");
-			Integer fieldNumber = Integer.parseInt(fieldNumberString);
-
-			int row = fieldNumber / Playground.MAX_ROW;
-			int column = fieldNumber % Playground.MAX_ROW;
-
-			if (this.game.isLegalMove(row, column) && !game.isOver()) {
-			
-				Move humanMove = new Move(row, column, currentPlayer.getColor());
-				this.game.move(humanMove);
-			}
-		}
-	}
+    if (currentPlayer instanceof HumanPlayer) {
+  
+      if (this.game.isLegalMove(row, column) && !game.isOver()) {
+      
+        Move humanMove = new Move(row, column, currentPlayer.getColor());
+        this.game.move(humanMove);
+      }
+    }
+  }
 
 	
 	public void newGame() {
@@ -97,6 +87,18 @@ public class GameView implements Observer {
 
 		this.game.switchPlayers();
 		FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("menuForm");
+	}
+
+
+	public boolean notOver() {
+	  
+	  return !this.game.isOver();
+	}
+	
+	
+	public String getCurrentPlayer() {
+	  
+	  return String.valueOf(this.game.getCurrentPlayer().getColor());
 	}
 
 

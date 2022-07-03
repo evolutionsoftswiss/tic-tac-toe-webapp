@@ -1,12 +1,27 @@
-<?xml version="1.0"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
 <f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
     locale="#{facesContext.externalContext.requestLocale}"
 >
 	<h:head>
 		<h:outputStylesheet library="css" name="tic-tac-toe.css" />
+		<script type="text/javascript">
+			//<![CDATA[
+
+			var ID_BASE_NUMBER = 13;
+				
+			function showMove(row, column, color) {
+
+				var fieldElement = document.getElementById("tictactoeForm:j_idt" + (ID_BASE_NUMBER + (3 * row) + column));
+				fieldElement.className = "gameField gameStone" + color;
+				fieldElement.value = color;
+	        }
+			//]]>
+		</script>
 	</h:head>
 
 	<h:body styleClass="ticTacToeBody">
@@ -37,60 +52,18 @@
 		<h:form id="tictactoeForm" class="playgroundPanel">
 
 			<h:panelGrid columns="3">
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(0,0)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(0,0)}">
-					<f:param name="fieldNumber" value="0" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(0,1)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(0,1)}">
-					<f:param name="fieldNumber" value="1" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(0,2)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(0,2)}">
-					<f:param name="fieldNumber" value="2" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(1,0)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(1,0)}">
-					<f:param name="fieldNumber" value="3" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(1,1)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(1,1)}">
-					<f:param name="fieldNumber" value="4" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(1,2)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(1,2)}">
-					<f:param name="fieldNumber" value="5" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(2,0)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(2,0)}">
-					<f:param name="fieldNumber" value="6" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(2,1)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(2,1)}">
-					<f:param name="fieldNumber" value="7" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
-				<h:commandButton actionListener="#{gameView.move()}"
-					value="#{gameView.getPlaygroundField(2,2)}"
-					styleClass="gameField gameStone#{gameView.getPlaygroundField(2,2)}">
-					<f:param name="fieldNumber" value="8" />
-					<f:ajax render="menuForm tictactoeForm" />
-				</h:commandButton>
+				<c:forEach begin="0" end="2" varStatus="rowStatus">
+					<c:forEach begin="0" end="2" varStatus="columnStatus"> 
+						<h:commandButton actionListener="#{gameView.move(rowStatus.index, columnStatus.index)}"
+										 ajax="true"
+										 value="#{gameView.getPlaygroundField(rowStatus.index, columnStatus.index)}"
+										 widgetVar="fieldButton#{rowStatus.index}#{columnStatus.index}"
+										 onclick=" if (#{gameView.notOver()} &amp;&amp; '#{gameView.getPlaygroundField(rowStatus.index, columnStatus.index)}' == ' ') { showMove(#{rowStatus.index}, #{columnStatus.index}, '#{gameView.getCurrentPlayer()}'); }"
+										 styleClass="gameField gameStone#{gameView.getPlaygroundField(rowStatus.index, columnStatus.index)} ui-noborder">
+							<f:ajax render="menuForm tictactoeForm" />
+			            </h:commandButton>
+			        </c:forEach>
+		        </c:forEach>
 			</h:panelGrid>
 
 			<h:outputLabel value="#{i18n[gameView.statusText]}"
@@ -101,3 +74,4 @@
 	</h:body>
 
 </f:view>
+</html>
