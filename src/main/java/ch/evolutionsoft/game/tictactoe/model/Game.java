@@ -1,11 +1,13 @@
 package ch.evolutionsoft.game.tictactoe.model;
 
-import java.util.Observable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 /**
  * @author EvolutionSoft
  */
-public class Game extends Observable {
+public class Game implements Serializable {
 
 	private Player playerX;
 	private Player playerO;
@@ -13,12 +15,16 @@ public class Game extends Observable {
 	private Playground playground;
 
 	private boolean gameOver = false;
+	
+	private PropertyChangeSupport propertyChangeSupport;
 
-	public Game(Player firstPlayer, Player secondPlayer) {
+	public Game(Player firstPlayer, Player secondPlayer, PropertyChangeListener propertyChangeListener) {
 
 		this.playerX = firstPlayer.getColor() == Player.FIRST_PLAYER ? firstPlayer : secondPlayer;
 		this.playerO = secondPlayer.getColor() == Player.SECOND_PLAYER ? secondPlayer : firstPlayer;
 		this.turn = Player.FIRST_PLAYER;
+    this.propertyChangeSupport = new PropertyChangeSupport(this);
+    this.propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 		this.playground = new Playground();
 	}
 
@@ -101,21 +107,18 @@ public class Game extends Observable {
 		if (playground.hasWon(turn)) {
 
 			this.gameOver = true;
-			this.setChanged();
 			
 			Player winningPlayer = (turn == Player.FIRST_PLAYER) ? playerX : playerO;
-			this.notifyObservers(winningPlayer);
+			this.propertyChangeSupport.firePropertyChange("player won", null, winningPlayer);
 
 		} else if (!playground.hasEmptyFieldsLeft()) {
 
 			this.gameOver = true;
-			this.setChanged();
-			this.notifyObservers("draw");
+			this.propertyChangeSupport.firePropertyChange("draw", false, true);
 		
 		} else {
 
-			this.setChanged();
-			this.notifyObservers(move);
+		  this.propertyChangeSupport.firePropertyChange("move", null, move);
 		}
 	}
 }

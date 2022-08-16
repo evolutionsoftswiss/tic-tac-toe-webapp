@@ -1,15 +1,14 @@
 package ch.evolutionsoft.game.tictactoe.view;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,9 +20,9 @@ import ch.evolutionsoft.game.tictactoe.model.Move;
 import ch.evolutionsoft.game.tictactoe.model.Player;
 import ch.evolutionsoft.game.tictactoe.model.Playground;
 
-@ManagedBean
+@Named("gameView")
 @ViewScoped
-public class GameView implements Observer {
+public class GameView implements PropertyChangeListener, Serializable {
 
 	Game game;
 
@@ -36,7 +35,7 @@ public class GameView implements Observer {
 
 	Random random = new Random();
 
-	static final Logger gameLog = LogManager.getLogger(GameView.class); 
+	static final transient Logger gameLog = LogManager.getLogger(GameView.class); 
 
 
   @PostConstruct
@@ -44,8 +43,8 @@ public class GameView implements Observer {
 
   	this.game = new Game(
   				new ComputerPlayer(Player.FIRST_PLAYER),
-  				new HumanPlayer(Player.SECOND_PLAYER));
-		this.game.addObserver(this);
+  				new HumanPlayer(Player.SECOND_PLAYER),
+  				this);
 		this.initGame();
 		
 		gameLog.info("Tic Tac Toe Game initialized.");
@@ -55,14 +54,13 @@ public class GameView implements Observer {
 
     Player currentPlayer = this.game.getCurrentPlayer();
 
-    if (currentPlayer instanceof HumanPlayer) {
-  
-      if (this.game.isLegalMove(row, column) && !game.isOver()) {
+    if (currentPlayer instanceof HumanPlayer &&
+        this.game.isLegalMove(row, column) && !game.isOver()) {
       
-        Move humanMove = new Move(row, column, currentPlayer.getColor());
-        this.game.move(humanMove);
-      }
+      Move humanMove = new Move(row, column, currentPlayer.getColor());
+      this.game.move(humanMove);
     }
+    
   }
 
 	
@@ -112,40 +110,31 @@ public class GameView implements Observer {
 	}
 
 
-	@Override
-	public void update(Observable observable, Object argument) {
+  @Override
+  public void propertyChange(PropertyChangeEvent evt) {
 
-		if (argument instanceof String && argument.equals("draw")) {
+    if (evt.getPropertyName().equals("draw")) {
 
-			setStatusText("tictactoe.draw");
-			this.setSwitchColorsEnabled(true);
+      setStatusText("tictactoe.draw");
+      this.setSwitchColorsEnabled(true);
 
-		} else if (argument instanceof Player) {
+    } else if (evt.getNewValue() instanceof Player) {
 
-			String newText = "tictactoe.cpuWins";
+      String newText = "tictactoe.cpuWins";
 
-			if (argument instanceof HumanPlayer) {
-				newText = "tictactoe.humanWins";
-			}
+      if (evt.getNewValue() instanceof HumanPlayer) {
+        newText = "tictactoe.humanWins";
+      }
 
-			setStatusText(newText);
-			this.setSwitchColorsEnabled(true);
-		
-		} else if (argument instanceof Move) {
-			
-			this.setMoveStatus((Move) argument);
-		}
-
-		this.rerenderForms();
-	}
-
-
-	public void rerenderForms() {
-	
-		Collection<String> renderIds = FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds();
-		renderIds.add("tictactoeForm");
-		renderIds.add("menuForm");
-	}
+      setStatusText(newText);
+      this.setSwitchColorsEnabled(true);
+    
+    } else if (evt.getNewValue() instanceof Move) {
+      
+      this.setMoveStatus((Move) evt.getNewValue());
+    }
+    
+  }
 
 
 	public String getStatusText() {

@@ -7,8 +7,6 @@ import ch.evolutionsoft.game.tictactoe.treesearch.AlphaBetaSearch;
  */
 public class ComputerPlayer extends Player {
 
-	private AlphaBetaSearch alphaBetaSearch;
-
 	public ComputerPlayer(char color) {
 
 		super(color);
@@ -17,7 +15,7 @@ public class ComputerPlayer extends Player {
 
 	void move(Game game) {
 
-		alphaBetaSearch = new AlphaBetaSearch(game.getPlayground().getPosition());
+		AlphaBetaSearch alphaBetaSearch = new AlphaBetaSearch(game.getPlayground().getPosition());
 
 		if (this.color == Player.FIRST_PLAYER) {
 

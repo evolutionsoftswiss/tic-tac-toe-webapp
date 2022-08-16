@@ -1,9 +1,11 @@
 package ch.evolutionsoft.game.tictactoe.model;
 
+import java.io.Serializable;
+
 /**
  * @author EvolutionSoft
  */
-public abstract class Player {
+public abstract class Player implements Serializable {
 
 	public static final char FIRST_PLAYER = 'X';
 	public static final char SECOND_PLAYER = 'O';

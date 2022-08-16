@@ -1,12 +1,13 @@
 package ch.evolutionsoft.game.tictactoe.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author EvolutionSoft
  */
-public class Playground {
+public class Playground implements Serializable {
 
 	public static final int MAX_ROW = 3;
 	public static final int MAX_COLUMN = 3;

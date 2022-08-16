@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html>
-<f:view xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-    locale="#{facesContext.externalContext.requestLocale}"
->
+	lang="#{localeBean.locale}">
+
+	
+<f:view locale="#{localeBean.locale}">
+
+	<f:metadata>
+		<c:if test = "${param.language != null}">
+			<f:viewAction action="#{localeBean.setLanguage(param.language)}"/>
+		</c:if>
+	</f:metadata>
 	<h:head>
+	    <h:outputStylesheet library="webjars" name="primeflex/3.2.1/primeflex.min.css" />
 		<h:outputStylesheet library="css" name="tic-tac-toe.css" />
+		<meta name="viewport" content="width=device-width" />
+		<meta content="no-cache" http-equiv="Pragma" />
 		<script type="text/javascript">
 			//<![CDATA[
 
-			var ID_BASE_NUMBER = 13;
+			var ID_BASE_NUMBER = 14;
+			var COLUMN_COUNT = 3;
 				
 			function showMove(row, column, color) {
 
-				var fieldElement = document.getElementById("tictactoeForm:j_idt" + (ID_BASE_NUMBER + (3 * row) + column));
+				var fieldElement = document.getElementById("tictactoeForm:j_idt" + (ID_BASE_NUMBER + (COLUMN_COUNT * row) + column));
 				fieldElement.className = "gameField gameStone" + color;
 				fieldElement.value = color;
 	        }

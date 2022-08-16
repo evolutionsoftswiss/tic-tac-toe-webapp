@@ -3,13 +3,15 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
 
-	<!-- Seting the JSF 2 PROJECT_STAGE to Development will cause the JSF implementation will do the following at runtime: -->
-	<!-- 1. Log more verbose messages. -->
-	<!-- 2. Render tips and/or warnings in the view markup. -->
-	<!-- 3. Cause the default ExceptionHandler to display a developer-friendly error page. -->
+	<distributable />
+
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
-		<param-value>Development</param-value>
+		<param-value>Production</param-value>
+	</context-param>
+	<context-param>
+	    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+	    <param-value>client</param-value>
 	</context-param>
 	<context-param>
 		<param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
@@ -24,4 +26,16 @@
 	    <servlet-name>Faces Servlet</servlet-name>
 	    <url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+	<resource-env-ref>
+	   <resource-env-ref-name>BeanManager</resource-env-ref-name>
+	   <resource-env-ref-type>jakarta.enterprise.inject.spi.BeanManager</resource-env-ref-type>
+	</resource-env-ref>
+	
+	<env-entry>
+	    <env-entry-name>jsf/ClientSideSecretKey</env-entry-name>
+	    <env-entry-type>java.lang.String</env-entry-type>
+	    <env-entry-value>ichvRidEYLmdGj18WbnQmg==</env-entry-value>
+	</env-entry>
+	
 </web-app>
