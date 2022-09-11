@@ -1,5 +1,5 @@
 # tic-tac-toe-webapp
-A Tic Tac Toe web applications designed for web servers like tomcat. Successfully tested with apache tomcat 9.0.64.
+A Tic Tac Toe web application designed for web servers like tomcat. Successfully tested with apache tomcat 9.0.64.
 
 You find a running version on [evolutionsoft.ch](https://evolutionsoft.ch/tic-tac-toe).
 
