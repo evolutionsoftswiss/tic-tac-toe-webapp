@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	lang="#{localeBean.locale}">
@@ -19,10 +20,11 @@
 		<h:outputStylesheet library="css" name="tic-tac-toe.css" />
 		<meta name="viewport" content="width=device-width" />
 		<meta content="no-cache" http-equiv="Pragma" />
+		<meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control" />
 		<script type="text/javascript">
 			//<![CDATA[
 
-			var ID_BASE_NUMBER = 14;
+			var ID_BASE_NUMBER = 15;
 			var COLUMN_COUNT = 3;
 				
 			function showMove(row, column, color) {
