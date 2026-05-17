@@ -16,6 +16,7 @@
 		</c:if>
 	</f:metadata>
 	<h:head>
+		<title>#{i18n['tictactoe.title']}</title>
 	    <h:outputStylesheet library="webjars" name="primeflex/3.2.1/primeflex.min.css" />
 		<h:outputStylesheet library="css" name="tic-tac-toe.css" />
 		<meta name="viewport" content="width=device-width" />
@@ -23,13 +24,10 @@
 		<meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control" />
 		<script type="text/javascript">
 			//<![CDATA[
-
-			var ID_BASE_NUMBER = 14;
-			var COLUMN_COUNT = 3;
 				
 			function showMove(row, column, color) {
 
-				var fieldElement = document.getElementById("tictactoeForm:j_idt" + (ID_BASE_NUMBER + (COLUMN_COUNT * row) + column));
+				var fieldElement = document.getElementById("tictactoeForm:field_" + row + "_" + column);
 				fieldElement.className = "gameField gameStone" + color;
 				fieldElement.value = color;
 	        }
@@ -64,14 +62,15 @@
 
 		<h:form id="tictactoeForm" class="playgroundPanel">
 
-			<h:panelGrid columns="3">
+			<h:panelGrid columns="3" cellspacing="0" cellpadding="0" styleClass="playgroundGrid">
 				<c:forEach begin="0" end="2" varStatus="rowStatus">
 					<c:forEach begin="0" end="2" varStatus="columnStatus"> 
 						<h:commandButton actionListener="#{gameView.move(rowStatus.index, columnStatus.index)}"
 										 ajax="true"
+										 id="field_#{rowStatus.index}_#{columnStatus.index}"
 										 value="#{gameView.getPlaygroundField(rowStatus.index, columnStatus.index)}"
 										 widgetVar="fieldButton#{rowStatus.index}#{columnStatus.index}"
-										 onclick=" if (#{gameView.notOver()} &amp;&amp; '#{gameView.getPlaygroundField(rowStatus.index, columnStatus.index)}' == ' ') { showMove(#{rowStatus.index}, #{columnStatus.index}, '#{gameView.getCurrentPlayer()}'); }"
+										 onclick="if (#{gameView.notOver()}) { showMove(#{rowStatus.index}, #{columnStatus.index}, '#{gameView.getCurrentPlayer()}');}"
 										 styleClass="gameField gameStone#{gameView.getPlaygroundField(rowStatus.index, columnStatus.index)} ui-noborder">
 							<f:ajax render="menuForm tictactoeForm" />
 			            </h:commandButton>

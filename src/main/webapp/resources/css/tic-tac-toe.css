@@ -14,27 +14,28 @@
 	padding-top: 2em;
 }
 
+.playgroundGrid {
+	border-right: 2px solid #999;
+	border-bottom: 2px solid #999;
+}
+
 .statusText {
 	padding-top: 2em;
 }
 
 .gameField {
 	background-color: #e9e9e9;
-	border-left: 1px solid #AAA;
-	border-top: 1px solid #AAA;
-	display: inline-block !important;
+	border-top: 2px solid #999;
+	border-left: 2px solid #999;
+	border-right: none;
+	border-bottom: none;
 	width: 1.4em;
 	font-size: 5em;
 	text-align: center;
 }
 
 .ui-button-text-only .ui-button-text {
-	padding: 0.1em !important;
 	min-height: 1.4em;
-}
-
-.gameStone {
-	
 }
 
 .gameStoneX {
